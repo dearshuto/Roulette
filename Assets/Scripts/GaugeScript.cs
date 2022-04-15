@@ -25,11 +25,14 @@ public class GaugeScript : MonoBehaviour
         }
         _count = 40;
 
-        image.fillAmount = 0.25f;//Mathf.Sin(Mathf.Deg2Rad * (float)_count);
+        var angularSpeed =_bottleRigidBody.angularVelocity.magnitude / 2.0f;
+        image.fillAmount = 0.25f + Mathf.Clamp((float)angularSpeed, 0.0f, 0.15f);//Mathf.Sin(Mathf.Deg2Rad * (float)_count);
 
         if (_bottleRigidBody is null) { throw new System.Exception(); }
         var currentRotation = image.rectTransform.rotation.eulerAngles;
-        var nextRotatiuon = new Vector3(currentRotation.x, currentRotation.y, 220.0f + _bottleRigidBody.transform.rotation.eulerAngles.z);
+        
+        var angle = ((int)_bottleRigidBody.transform.rotation.eulerAngles.z) / 90 * 90;
+        var nextRotatiuon = new Vector3(currentRotation.x, currentRotation.y, -90.0f + angle);
         image.rectTransform.rotation = Quaternion.Euler(nextRotatiuon);
     }
 }
